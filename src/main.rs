@@ -1,3 +1,13 @@
+use sysinfo;
+
 fn main() {
-    println!("Hello, world!");
+    loop {
+        // TODO
+    }
 }
+
+// TODO Separator
+// TODO Network
+// TODO Memory
+// TODO Pulseaudio
+// TODO Date
