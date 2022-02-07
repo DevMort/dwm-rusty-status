@@ -9,6 +9,7 @@ Shows a system information in the bar of [[https://dwm.suckless.org/][dwm]].
 + Extensible
 + Simple
 + Few lines of code
++ Light in resources
 
 ** Installation
 1. Clone this repository.
