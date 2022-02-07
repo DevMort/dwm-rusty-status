@@ -7,7 +7,7 @@ fn main() {
     let mut system_info: String = String::new();
     loop {
         // Systeminfo - gets the infos
-        let mut sys = System::new_all();
+        let sys = System::new_all();
         system_info = String::new(); // refresh the string
                                      // TODO update system_info
 
@@ -23,7 +23,7 @@ fn main() {
         date(&mut system_info);
 
         // sleep for 500 milliseconds
-        thread::sleep(Duration::from_millis(1000));
+        thread::sleep(Duration::from_millis(500));
 
         // show status in bar
         Command::new("xsetroot")
@@ -42,6 +42,7 @@ fn separator(system_info: &mut String) {
 // Network
 fn network(system_info: &mut String, sys: &System) {
     let mut to_push = String::new();
+
     for (_, data) in sys.networks() {
         to_push = format!(
             "[{} down {} up]",
@@ -70,7 +71,23 @@ fn memory(system_info: &mut String, sys: &System) {
 }
 
 // Sound
-fn volume(system_info: &mut String) {}
+fn volume(system_info: &mut String) {
+    let mut args = std::env::args();
+    if args.len() == 1 || args.len() > 2 {
+        eprintln!("[error] pass in a path to the volume script getting the volume");
+        std::process::exit(1);
+    }
+
+    if let Ok(volume) = std::str::from_utf8(
+        &Command::new("bash")
+            .arg(args.nth(1).unwrap())
+            .output()
+            .expect("Failed to get volume.")
+            .stdout,
+    ) {
+        system_info.push_str(&format!("[{}%]", volume.trim()));
+    }
+}
 
 // Date
 fn date(system_info: &mut String) {
