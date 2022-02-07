@@ -5,7 +5,6 @@ use sysinfo::{NetworkExt, System, SystemExt};
 fn main() {
     // The final string that'll be shown in the dwm bar.
     let mut system_info: String = String::new();
-
     loop {
         // Systeminfo - gets the infos
         let mut sys = System::new_all();
@@ -14,15 +13,17 @@ fn main() {
 
         // show system_info
         system_name(&mut system_info, &sys);
-        separator(&mut system_info);
-        network(&mut system_info, &sys);
+        // separator(&mut system_info);
+        // network(&mut system_info, &sys);
         separator(&mut system_info);
         memory(&mut system_info, &sys);
+        separator(&mut system_info);
+        volume(&mut system_info);
         separator(&mut system_info);
         date(&mut system_info);
 
         // sleep for 500 milliseconds
-        thread::sleep(Duration::from_millis(500));
+        thread::sleep(Duration::from_millis(1000));
 
         // show status in bar
         Command::new("xsetroot")
@@ -44,8 +45,8 @@ fn network(system_info: &mut String, sys: &System) {
     for (_, data) in sys.networks() {
         to_push = format!(
             "[{} down {} up]",
-            data.packets_received() as f32 / 1_048_576.0,
-            data.packets_transmitted() as f32 / 1_048_576.0
+            data.total_packets_received(),
+            data.total_packets_transmitted(),
         );
     }
 
@@ -69,9 +70,7 @@ fn memory(system_info: &mut String, sys: &System) {
 }
 
 // Sound
-fn volume(system_info: &mut String) {
-    // system_info.push_str(&format!("[{}%]", sink.volume()));
-}
+fn volume(system_info: &mut String) {}
 
 // Date
 fn date(system_info: &mut String) {
