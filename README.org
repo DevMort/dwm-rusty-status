@@ -1,5 +1,7 @@
 * dwm Rusty Status
 
+[[./example.png]]
+
 ** Project Description
 Shows a system information in the bar of [[https://dwm.suckless.org/][dwm]].
 
