@@ -11,16 +11,8 @@ Shows a system information in the bar of [[https://dwm.suckless.org/][dwm]].
 + Few lines of code
 + Light in resources
 
-** Installation
-1. Clone this repository.
-2. ~cd dwm-rusty-status/~
-3. Modify it based on what you want.
-4. ~cp assets/volume.sh <SOMEWHERE IN YOUR MACHINE>~
-5. Modify volume.sh based on how you get your volume value.
-6. ~cargo install --path .~
-
 ** Usage
 Put this in your .xinitrc or somewhere that autostarts your programs.
 #+begin_src bash
-dwm-rusty-status <volume.sh PATH> &
+dwm-rusty-status &
 #+end_src
