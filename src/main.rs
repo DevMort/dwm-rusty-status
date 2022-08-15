@@ -11,7 +11,7 @@ fn main() {
         // show status in bar
         Command::new("xsetroot")
             .arg("-name")
-            .arg(system_info)
+            .arg(system_info.trim())
             .output()
             .expect("Failed to show bar! Have you got xsetroot installed?");
     }
