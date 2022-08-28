@@ -3,10 +3,10 @@ use std::{process::Command, thread, time::Duration};
 
 fn main() {
     loop {
-        let system_info = format!("{}{}", username(), date(),);
+        let system_info = format!("{}{}{}", username(), date(), volume());
 
         // sleep for 500 milliseconds
-        thread::sleep(Duration::from_millis(1000));
+        thread::sleep(Duration::from_millis(250));
 
         // show status in bar
         Command::new("xsetroot")
@@ -34,4 +34,20 @@ fn date() -> String {
     let time = dt.format("%H:%M:%S").to_string();
 
     format!("[{}] [{}] ", date, time)
+}
+
+// Volume
+fn volume() -> String {
+    match Command::new("amixer").arg("sget").arg("Master").output() {
+        Ok(output) => {
+            let s = String::from_utf8(output.stdout)
+                .unwrap()
+                .trim()
+                .lines()
+                .filter(|l| l.contains("Front Left"))
+                .collect::<String>();
+            format!("{}", s.rsplit(' ').collect::<Vec<&str>>().get(1).unwrap())
+        }
+        Err(_) => String::new(),
+    }
 }
