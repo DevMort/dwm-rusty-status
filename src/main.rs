@@ -2,8 +2,10 @@ use chrono::Local;
 use std::{process::Command, thread, time::Duration};
 
 fn main() {
+    thread::sleep(Duration::from_millis(1000));
+
     loop {
-        let system_info = format!("{}{}{}", username(), date(), volume());
+        let system_info = format!("{}{}{}{}", username(), date(), battery(), volume());
 
         // sleep for 500 milliseconds
         thread::sleep(Duration::from_millis(250));
@@ -47,6 +49,28 @@ fn volume() -> String {
                 .filter(|l| l.contains("Front Left"))
                 .collect::<String>();
             format!("{}", s.rsplit(' ').collect::<Vec<&str>>().get(1).unwrap())
+        }
+        Err(_) => String::new(),
+    }
+}
+
+// Battery
+fn battery() -> String {
+    match Command::new("acpi").arg("-b").output() {
+        Ok(output) => {
+            let s = String::from_utf8(output.stdout).unwrap();
+            if !s.contains("No support") {
+                let percent = s
+                    .split_whitespace()
+                    .map(|s| s.to_string())
+                    .collect::<Vec<String>>();
+                match percent.get(3) {
+                    Some(p) => format!("[bat {}] ", p),
+                    None => String::new(),
+                }
+            } else {
+                String::new()
+            }
         }
         Err(_) => String::new(),
     }
