@@ -5,3 +5,6 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.19"
+
+[package.metadata.nix]
+build = true
