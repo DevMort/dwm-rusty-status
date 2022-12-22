@@ -6,7 +6,7 @@ fn main() {
         let system_info = format!("{}{}{}", username(), date(), volume());
 
         // sleep for 500 milliseconds
-        thread::sleep(Duration::from_millis(250));
+        thread::sleep(Duration::from_millis(500));
 
         // show status in bar
         Command::new("xsetroot")
@@ -21,7 +21,7 @@ fn main() {
 fn username() -> String {
     match Command::new("whoami").output() {
         Ok(output) => {
-            format!("[{}] ", String::from_utf8(output.stdout).unwrap().trim())
+            format!(" {} ", String::from_utf8(output.stdout).unwrap().trim())
         }
         Err(_) => String::new(), // should it give an error, let's just not show the username
     }
@@ -30,10 +30,10 @@ fn username() -> String {
 // Date
 fn date() -> String {
     let dt = Local::now();
-    let date = dt.format("%a %b %e").to_string();
-    let time = dt.format("%H:%M:%S").to_string();
+    let date = dt.format(" %a %b %e").to_string();
+    let time = dt.format(" %H:%M").to_string();
 
-    format!("[{}] [{}] ", date, time)
+    format!("{} {} ", date, time)
 }
 
 // Volume
@@ -46,7 +46,12 @@ fn volume() -> String {
                 .lines()
                 .filter(|l| l.contains("Front Left"))
                 .collect::<String>();
-            format!("{}", s.rsplit(' ').collect::<Vec<&str>>().get(1).unwrap())
+            let volume = s
+                .rsplit(' ')
+                .map(|s| s.to_string())
+                .collect::<Vec<String>>();
+            let x: &[_] = &['[', ']'];
+            format!(" {}", volume.get(1).unwrap().trim_matches(x))
         }
         Err(_) => String::new(),
     }
