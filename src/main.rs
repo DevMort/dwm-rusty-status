@@ -70,7 +70,10 @@ fn battery() -> String {
                     .map(|s| s.to_string())
                     .collect::<Vec<String>>();
                 match percent.get(3) {
-                    Some(p) => format!("[bat {}] ", p),
+                    Some(p) => {
+                        let charge = p.chars().filter(|c| c.is_numeric()).collect::<String>();
+                        format!(" {}% ", charge)
+                    }
                     None => String::new(),
                 }
             } else {
