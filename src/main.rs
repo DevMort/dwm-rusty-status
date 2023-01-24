@@ -23,7 +23,7 @@ fn main() {
 fn username() -> String {
     match Command::new("whoami").output() {
         Ok(output) => {
-            format!(" {} ", String::from_utf8(output.stdout).unwrap().trim())
+            format!(" {} ", String::from_utf8(output.stdout).unwrap().trim())
         }
         Err(_) => String::new(), // should it give an error, let's just not show the username
     }
