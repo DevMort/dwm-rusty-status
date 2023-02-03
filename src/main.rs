@@ -53,7 +53,12 @@ fn volume() -> String {
                 .map(|s| s.to_string())
                 .collect::<Vec<String>>();
             let x: &[_] = &['[', ']'];
-            format!(" {}", volume.get(1).unwrap().trim_matches(x))
+
+            if let Some(percent) = volume.get(1) {
+                format!(" {}", percent.trim_matches(x))
+            } else {
+                String::new()
+            }
         }
         Err(_) => String::new(),
     }
